@@ -9,7 +9,7 @@ end
 ext 'apt' do
   requires {
     on :ubuntu, 'main apt source', 'universe apt source'
-    on :debian, 'main apt source', 'contrib apt source'
+    on :debian, 'main apt source'
   }
   if_missing 'apt-get' do
     log "Your system doesn't seem to have Apt installed. Is it Debian-based?"
