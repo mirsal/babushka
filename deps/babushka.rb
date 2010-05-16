@@ -2,14 +2,8 @@
 dep 'babushka' do
   requires 'babushka in path', 'babushka up to date', 'dep source'
   define_var :install_prefix, :default => '/usr/local', :message => "Where would you like babushka installed"
-  define_var :babushka_branch,
-    :message => "Which branch would you like to update from?",
-    :default => 'master',
-    :choice_descriptions => {
-      'master' => 'Standard-issue babushka',
-      'next' => 'The development head -- slight risk of explosions'
-    }
   setup {
+    set :babushka_branch, 'deploy'
     set :install_prefix, Babushka::Path.prefix if Babushka::Path.run_from_path?
   }
 end
@@ -59,7 +53,7 @@ end
 dep 'dep source' do
   requires 'babushka in path'
   setup {
-    define_var :dep_source, :default => (shell('git config github.user') || 'benhoskings'), :message => "Whose deps would you like to install (you can add others' later)"
+    define_var :dep_source, :default => (shell('git config github.user') || 'mirsal'), :message => "Whose deps would you like to install (you can add others' later)"
   }
   met? {
     returning(!(source_count = shell('babushka sources -l').split("\n").reject {|l| l.starts_with? '#' }.length).zero?) do |result|
@@ -71,7 +65,7 @@ end
 
 dep 'babushka installed' do
   requires 'ruby', 'git', 'writable install location', 'install location in path'
-  setup { set :babushka_source, "git://github.com/benhoskings/babushka.git" }
+  setup { set :babushka_source, "git://github.com/mirsal/babushka.git" }
   met? { git_repo?(var(:install_prefix) / 'babushka') }
   meet {
     in_dir var :install_prefix do |path|
