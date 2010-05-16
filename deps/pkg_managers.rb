@@ -42,6 +42,10 @@ apt_source 'universe apt source' do
   source_name 'universe'
 end
 
+apt_source 'contrib apt source' do
+  source_name 'contrib'
+end
+
 dep 'homebrew' do
   requires 'homebrew binary in place', 'build tools'
 end
